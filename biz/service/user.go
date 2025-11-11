@@ -26,8 +26,8 @@ func (svc *UserService) Register(user *mysql.User) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if !exist {
-		return "", errno.NewErrNo(errno.ServiceUserNotExistCode, "user not exist")
+	if exist {
+		return "", errno.NewErrNo(errno.ServiceUserExistCode, "user  exist")
 	}
 	user.Password, err = crypt.PasswordHash(user.Password)
 	if err != nil {

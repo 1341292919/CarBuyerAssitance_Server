@@ -26,3 +26,18 @@ type Consult struct {
 	FuelType        string // 燃料材料偏好
 	BrandPreference string // 品牌偏好
 }
+
+type Consultation struct {
+	UserId          string
+	ConsultId       int
+	BudgetRange     string // 预算范围
+	PreferredType   string // 偏好车型
+	UseCase         string // 主要使用场景
+	FuelType        string // 燃料材料偏好
+	BrandPreference string // 品牌偏好
+}
+
+type AllConsulation struct {
+	Consultation  Consultation
+	ConsultResult ConsultResult
+}

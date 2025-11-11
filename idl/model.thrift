@@ -30,3 +30,16 @@ struct Car{
 	string Drive
 	string RecommendedReason
 }
+struct Consult {
+    string	UserId
+    i64	ConsultId
+    string	BudgetRange
+    string	PreferredType
+    string	UseCase
+    string	FuelType
+    string	BrandPreference
+}
+struct Consultation{
+    1:required Consult consult
+    2: required ConsultResult consult_result
+}

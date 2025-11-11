@@ -4,6 +4,7 @@ package user
 
 import (
 	"CarBuyerAssitance/biz/dal/mysql"
+	"CarBuyerAssitance/biz/mw/jwt"
 	"CarBuyerAssitance/biz/pack"
 	"CarBuyerAssitance/biz/service"
 	"CarBuyerAssitance/pkg/errno"
@@ -56,6 +57,11 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		pack.SendFailResponse(c, errno.ConvertErr(err))
 		return
 	}
+	jwt.AccessTokenJwtMiddleware.LoginHandler(ctx, c)
+	jwt.RefreshTokenJwtMiddleware.LoginHandler(ctx, c)
+
+	c.Header("Access-Token", c.GetString("Access-Token"))
+	c.Header("Refresh-Token", c.GetString("Refresh-Token"))
 	resp.Data = pack.User(userInfo)
 	resp.Base = pack.BuildBaseResp(errno.Success)
 	pack.SendResponse(c, resp)

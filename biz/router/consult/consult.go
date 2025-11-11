@@ -22,6 +22,7 @@ func Register(r *server.Hertz) {
 		{
 			_consult := _api.Group("/consult", _consultMw()...)
 			_consult.GET("/purchase", append(_consult0Mw(), consult.Consult)...)
+			_consult.GET("/query", append(_queryconsultMw(), consult.QueryConsult)...)
 		}
 	}
 }

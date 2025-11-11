@@ -3,12 +3,13 @@
 package consult
 
 import (
+	"CarBuyerAssitance/biz/router/auth"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
 func rootMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return auth.Auth()
 }
 
 func _apiMw() []app.HandlerFunc {
@@ -22,6 +23,11 @@ func _consultMw() []app.HandlerFunc {
 }
 
 func _consult0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _queryconsultMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

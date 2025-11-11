@@ -40,3 +40,25 @@ func Consult(ctx context.Context, c *app.RequestContext) {
 	resp.Base = pack.BuildBaseResp(errno.Success)
 	pack.SendResponse(c, resp)
 }
+
+// QueryConsult .
+// @router /api/consult/query [GET]
+func QueryConsult(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req consult.QueryConsultRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
+		return
+	}
+
+	resp := new(consult.QueryConsultResponse)
+	data, err := service.NewConsultService(ctx, c).QueryConsult(int(req.ConsultID))
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+	resp.Data = pack.Consultation(data)
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}

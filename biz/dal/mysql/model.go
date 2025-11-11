@@ -20,3 +20,29 @@ type User struct {
 	UpdatedAt      time.Time      `gorm:"column:updated_at"`
 	DeletedAt      gorm.DeletedAt `gorm:"index;column:deleted_at"`
 }
+
+// Consultation 咨询记录
+type Consultation struct {
+	ConsultID       int        `gorm:"primaryKey" json:"consult_id"`
+	UserID          string     `gorm:"not null" json:"user_id"`
+	BudgetRange     string     `gorm:"size:50;not null" json:"budget_range"`
+	PreferredType   string     `gorm:"size:20;not null" json:"preferred_type"`
+	UseCase         string     `gorm:"size:30;not null" json:"use_case"`
+	FuelType        string     `gorm:"size:20;not null" json:"fuel_type"`
+	BrandPreference string     `gorm:"size:50" json:"brand_preference"`
+	ConsultContent  string     `gorm:"type:text" json:"consult_content"`
+	CreatedAt       time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt       time.Time  `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	DeletedAt       *time.Time `gorm:"index" json:"deleted_at,omitempty"`
+}
+
+// ConsultResult 咨询结果
+type ConsultResult struct {
+	ResultID      int       `gorm:"primaryKey" json:"result_id"`
+	ConsultID     int       `gorm:"not null" json:"consult_id"`
+	Analysis      string    `gorm:"type:text;not null" json:"analysis"`
+	Proposal      string    `gorm:"type:text;not null" json:"proposal"`
+	RecommendCars string    `gorm:"type:json;not null" json:"recommend_cars"` // 存储Car数组的JSON
+	CreatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+}

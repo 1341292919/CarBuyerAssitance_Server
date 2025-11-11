@@ -32,46 +32,40 @@ CREATE TABLE `admin`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '管理员表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for consultation
+-- ----------------------------
+DROP TABLE IF EXISTS `consultation`;
+CREATE TABLE `consultation`  (
+                                 `consult_id` int NOT NULL AUTO_INCREMENT COMMENT '自增咨询ID',
+                                 `user_id` varchar(50) NOT NULL COMMENT '用户ID',
+                                 `budget_range` varchar(50) NOT NULL COMMENT '预算范围',
+                                 `preferred_type` varchar(20) NOT NULL COMMENT '偏好车型',
+                                 `use_case` varchar(30) NOT NULL COMMENT '主要使用场景',
+                                 `fuel_type` varchar(20) NOT NULL COMMENT '燃料类型偏好',
+                                 `brand_preference` varchar(50) NULL DEFAULT '' COMMENT '品牌偏好',
+                                 `consult_content` text NULL COMMENT '用户补充咨询内容',
+                                 `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                 `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                                 `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
+                                 PRIMARY KEY (`consult_id`) USING BTREE,
+                                 INDEX `idx_user_id`(`user_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '咨询记录表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for consult_result
 -- ----------------------------
 DROP TABLE IF EXISTS `consult_result`;
 CREATE TABLE `consult_result`  (
                                    `result_id` int NOT NULL AUTO_INCREMENT COMMENT '自增结果ID',
                                    `consult_id` int NOT NULL COMMENT '关联咨询ID',
-                                   `recommend_cars` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '推荐车型列表（JSON格式：[{name,brand,price,params,...}]）',
-                                   `car_comparison` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '车型对比分析',
-                                   `budget_advice` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '预算规划建议',
-                                   `professional_knowledge` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '相关专业知识解答',
-                                   `generate_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '结果生成时间',
-                                   `feedback_score` tinyint NULL DEFAULT 0 COMMENT '用户反馈评分（1-5分，0未反馈）',
-                                   `feedback_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '用户反馈内容',
+                                   `analysis` text NOT NULL COMMENT '分析内容',
+                                   `proposal` text NOT NULL COMMENT '总的购车建议',
+                                   `recommend_cars` json NOT NULL COMMENT '推荐车型列表（JSON格式存储Car数组）',
+                                   `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                   `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                                    PRIMARY KEY (`result_id`) USING BTREE,
-                                   UNIQUE INDEX `idx_consult_id`(`consult_id` ASC) USING BTREE
+                                   INDEX `idx_consult_id`(`consult_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '咨询结果表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for consultation
--- ----------------------------
-DROP TABLE IF EXISTS `consultation`;
-CREATE TABLE `consultation`  (
-                                 `consult_id` int NOT NULL AUTO_INCREMENT COMMENT '自增咨询ID',
-                                 `user_id` int NOT NULL COMMENT '关联用户ID',
-                                 `budget_min` decimal(10, 2) NOT NULL COMMENT '本次咨询最低预算（元）',
-                                 `budget_max` decimal(10, 2) NOT NULL COMMENT '本次咨询最高预算（元）',
-                                 `car_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '本次咨询偏好车型',
-                                 `use_scenario` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '使用场景（通勤/家庭/商务等）',
-                                 `fuel_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '燃料类型（燃油/电动/混动等）',
-                                 `brand_prefer` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '本次咨询品牌偏好',
-                                 `consult_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '用户补充咨询内容',
-                                 `consult_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '咨询发起时间',
-                                 `llm_used` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '本次使用的LLM（阿里百炼/智普AI等）',
-                                 `status` tinyint NULL DEFAULT 0 COMMENT '咨询状态（0-处理中/1-已完成）',
-                                 PRIMARY KEY (`consult_id`) USING BTREE,
-                                 INDEX `idx_user_id`(`user_id` ASC) USING BTREE,
-                                 INDEX `idx_car_type`(`car_type` ASC) USING BTREE,
-                                 INDEX `idx_use_scenario`(`use_scenario` ASC) USING BTREE,
-                                 INDEX `idx_fuel_type`(`fuel_type` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '咨询记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for gift
@@ -97,7 +91,7 @@ CREATE TABLE `gift`  (
 DROP TABLE IF EXISTS `gift_exchange`;
 CREATE TABLE `gift_exchange`  (
                                   `exchange_id` int NOT NULL AUTO_INCREMENT COMMENT '自增兑换ID',
-                                  `user_id` int NOT NULL COMMENT '关联用户ID',
+                                  `user_id` varchar(50) NOT NULL COMMENT '用户ID',
                                   `gift_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '礼品名称（汽车周边）',
                                   `need_points` int NOT NULL COMMENT '所需积分',
                                   `exchange_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '兑换时间',
@@ -127,7 +121,7 @@ CREATE TABLE `llm_config`  (
 DROP TABLE IF EXISTS `points`;
 CREATE TABLE `points`  (
                            `point_id` int NOT NULL AUTO_INCREMENT COMMENT '自增积分记录ID',
-                           `user_id` int NOT NULL COMMENT '关联用户ID',
+                           `user_id` varchar(50) NOT NULL COMMENT '用户ID',
                            `points` int NOT NULL COMMENT '变动积分（正增负减）',
                            `reason` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '积分变动原因（完成咨询/反馈等）',
                            `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '变动时间',

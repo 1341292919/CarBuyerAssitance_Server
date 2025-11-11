@@ -4,6 +4,7 @@ package main
 
 import (
 	"CarBuyerAssitance/biz/dal"
+	"CarBuyerAssitance/biz/mw/jwt"
 	"CarBuyerAssitance/biz/router"
 	"CarBuyerAssitance/config"
 	"CarBuyerAssitance/pkg/utils"
@@ -14,6 +15,7 @@ import (
 func init() {
 	config.Init("main")
 	dal.Init()
+	jwt.Init()
 }
 func main() {
 	listenAddr, err := utils.GetAvailablePort()

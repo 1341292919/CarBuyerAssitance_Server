@@ -46,3 +46,50 @@ func ConsultResult(data *model.ConsultResult) *resp.ConsultResult {
 
 	return result
 }
+func Consultation(data *model.AllConsulation) *resp.Consultation {
+	if data == nil {
+		return nil
+	}
+
+	result := &resp.Consultation{
+		Consult: &resp.Consult{
+			UserId:          data.Consultation.UserId,
+			ConsultId:       int64(data.Consultation.ConsultId),
+			BudgetRange:     data.Consultation.BudgetRange,
+			PreferredType:   data.Consultation.PreferredType,
+			UseCase:         data.Consultation.UseCase,
+			FuelType:        data.Consultation.FuelType,
+			BrandPreference: data.Consultation.BrandPreference,
+		},
+	}
+
+	// 转换ConsultResult
+	if data.ConsultResult.Result != nil {
+		result.ConsultResult = &resp.ConsultResult{
+			Analysis: data.ConsultResult.Analysis,
+			Proposal: data.ConsultResult.Proposal,
+			Result:   make([]*resp.Car, len(data.ConsultResult.Result)),
+		}
+
+		// 转换Car列表
+		for i, car := range data.ConsultResult.Result {
+			result.ConsultResult.Result[i] = &resp.Car{
+				ImageUrl:          car.ImageUrl,
+				CarName:           car.CarName,
+				FuelConsumption:   car.FuelConsumption,
+				Power:             car.Power,
+				Seat:              car.Seat,
+				Drive:             car.Drive,
+				RecommendedReason: car.RecommendedReason,
+			}
+		}
+	} else {
+		result.ConsultResult = &resp.ConsultResult{
+			Analysis: data.ConsultResult.Analysis,
+			Proposal: data.ConsultResult.Proposal,
+			Result:   []*resp.Car{},
+		}
+	}
+
+	return result
+}
