@@ -19,6 +19,7 @@ func CreateUser(ctx context.Context, user *User) (string, error) {
 	return user.UserId, nil
 }
 
+//判断用户是否存在
 func IsUserExist(ctx context.Context, user_id string) (bool, error) {
 	var userInfo *User
 	err := db.WithContext(ctx).
