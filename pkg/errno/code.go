@@ -31,11 +31,10 @@ const (
 // 业务错误
 const (
 	// user
-	ServiceUserExistCode      = 40000 + iota
-	ServiceEmailIncorrectCode // 邮箱格式不正确
-	ServiceUserDeathCode      // 用户未激活、没有绑定相应邮箱
-	ServiceUserPasswordError  // 密码错误
-	ServiceUserNotExistCode   //用户不存在错误
+	ServiceUserExistCode     = 40000 + iota
+	ServiceUserDeathCode     // 用户未激活、没有绑定相应邮箱
+	ServiceUserPasswordError // 密码错误
+	ServiceUserNotExistCode  //用户不存在错误
 	ServiceUserBanExistCode
 	ServiceGiftNotExistCode
 	ServiceGiftRunOutExistCode
@@ -73,5 +72,3 @@ const (
 	InternalRedisErrorCode // Redis错误
 	InterConfigErrorCode
 )
-
-
