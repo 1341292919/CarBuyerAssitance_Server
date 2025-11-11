@@ -46,3 +46,32 @@ type ConsultResult struct {
 	CreatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt     time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
+type Points struct {
+	PointID    int        `gorm:"primaryKey;column:point_id;autoIncrement" json:"point_id"`
+	UserID     string     `gorm:"column:user_id;not null;index:idx_user_id" json:"user_id"`
+	Points     int        `gorm:"column:points;not null" json:"points"`
+	Reason     string     `gorm:"column:reason;size:50;not null" json:"reason"`
+	CreateTime time.Time  `gorm:"column:create_time;default:CURRENT_TIMESTAMP" json:"create_time"`
+	UpdateTime time.Time  `gorm:"column:update_time;default:CURRENT_TIMESTAMP;autoUpdateTime" json:"update_time"`
+	DeletedAt  *time.Time `gorm:"column:deleted_at;index" json:"deleted_at,omitempty"`
+}
+
+type Gift struct {
+	GiftID         int64     `gorm:"primaryKey;column:gift_id;autoIncrement" json:"gift_id"`
+	GiftName       string    `gorm:"column:gift_name;size:100;not null" json:"gift_name"`
+	RequiredPoints int       `gorm:"column:required_points;not null;index:idx_points" json:"required_points"`
+	StockQuantity  int       `gorm:"column:stock_quantity;not null;default:0" json:"stock_quantity"`
+	CoverImageURL  string    `gorm:"column:cover_image_url;size:500" json:"cover_image_url"`
+	IsOnline       bool      `gorm:"column:is_online;not null;default:true" json:"is_online"`
+	CreateTime     time.Time `gorm:"column:create_time;default:CURRENT_TIMESTAMP;not null" json:"create_time"`
+	UpdateTime     time.Time `gorm:"column:update_time;default:CURRENT_TIMESTAMP;autoUpdateTime;not null" json:"update_time"`
+}
+
+type Exchange struct {
+	ExchangeID   int       `gorm:"primaryKey;column:exchange_id;autoIncrement" json:"exchange_id"`
+	UserID       string    `gorm:"column:user_id;not null;index:idx_user_id" json:"user_id"`
+	GiftName     string    `gorm:"column:gift_name;size:50;not null" json:"gift_name"`
+	NeedPoints   int       `gorm:"column:need_points;not null" json:"need_points"`
+	ExchangeTime time.Time `gorm:"column:exchange_time;default:CURRENT_TIMESTAMP" json:"exchange_time"`
+	Status       int8      `gorm:"column:status;default:0" json:"status"` // 0-待发货/1-已完成
+}

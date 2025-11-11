@@ -85,21 +85,17 @@ CREATE TABLE `gift`  (
                          INDEX `idx_status`(`is_online` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '汽车周边礼品表（用于积分兑换）' ROW_FORMAT = Dynamic;
 
--- ----------------------------
--- Table structure for gift_exchange
--- ----------------------------
 DROP TABLE IF EXISTS `gift_exchange`;
 CREATE TABLE `gift_exchange`  (
                                   `exchange_id` int NOT NULL AUTO_INCREMENT COMMENT '自增兑换ID',
                                   `user_id` varchar(50) NOT NULL COMMENT '用户ID',
-                                  `gift_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '礼品名称（汽车周边）',
+                                  `gift_name` varchar(50) NOT NULL COMMENT '礼品名称（汽车周边）',
                                   `need_points` int NOT NULL COMMENT '所需积分',
                                   `exchange_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '兑换时间',
                                   `status` tinyint NULL DEFAULT 0 COMMENT '兑换状态（0-待发货/1-已完成）',
                                   PRIMARY KEY (`exchange_id`) USING BTREE,
                                   INDEX `idx_user_id`(`user_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '礼品兑换表' ROW_FORMAT = Dynamic;
-
 -- ----------------------------
 -- Table structure for llm_config
 -- ----------------------------
@@ -125,11 +121,11 @@ CREATE TABLE `points`  (
                            `points` int NOT NULL COMMENT '变动积分（正增负减）',
                            `reason` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '积分变动原因（完成咨询/反馈等）',
                            `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '变动时间',
-                           `total_points` int NOT NULL COMMENT '变动后总积分',
+                           `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                           `deleted_at` datetime NULL DEFAULT NULL COMMENT '删除时间',
                            PRIMARY KEY (`point_id`) USING BTREE,
                            INDEX `idx_user_id`(`user_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '积分表' ROW_FORMAT = Dynamic;
-
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------

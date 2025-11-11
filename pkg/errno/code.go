@@ -36,9 +36,12 @@ const (
 	ServiceUserDeathCode      // 用户未激活、没有绑定相应邮箱
 	ServiceUserPasswordError  // 密码错误
 	ServiceUserNotExistCode
-	ServiceCodeExpired    // 邮箱验证码已过期
-	ServiceCodeNotMatched // 邮箱验证码不匹配
-	ServiceEmailWaitCode  // 等待两分钟重发邮件
+	ServiceGiftNotExistCode
+	ServiceGiftRunOutExistCode
+	ServicePointRunOutExistCode //积分不足
+	ServiceCodeExpired          // 邮箱验证码已过期
+	ServiceCodeNotMatched       // 邮箱验证码不匹配
+	ServiceEmailWaitCode        // 等待两分钟重发邮件
 	// event
 	ServiceEventNotExistCode  // 该赛事材料不存在
 	ServiceImageNotAwardCode  // 判断上传的图片不是奖状或者荣誉证书

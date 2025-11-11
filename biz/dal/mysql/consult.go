@@ -3,8 +3,11 @@ package mysql
 import (
 	"CarBuyerAssitance/biz/service/model"
 	"CarBuyerAssitance/pkg/constants"
+	"CarBuyerAssitance/pkg/errno"
 	"context"
 	"encoding/json"
+	"errors"
+	"gorm.io/gorm"
 )
 
 func CreateConsultation(ctx context.Context, userID string, consult *model.Consult) (*model.Consultation, error) {
@@ -101,4 +104,65 @@ func QueryConsultMessage(ctx context.Context, consultID int) (*model.AllConsulat
 	}
 
 	return allConsultation, nil
+}
+
+func GetOnlineGifts(ctx context.Context) ([]*Gift, error) {
+	var gifts []*Gift
+	err := db.WithContext(ctx).
+		Table(constants.TableGift).
+		Where("is_online = ?", true).
+		Order("required_points ASC").
+		Find(&gifts).
+		Error
+	return gifts, err
+}
+
+func IsGiftExist(ctx context.Context, gift_id int64) (bool, error) {
+	var userInfo *Gift
+	err := db.WithContext(ctx).
+		Table(constants.TableGift).
+		Where("gift_id = ?", gift_id).
+		First(&userInfo).
+		Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) { //没找到了说明用户不存在
+			return false, nil
+		}
+		return false, errno.Errorf(errno.InternalDatabaseErrorCode, "mysql: failed to query gift: %v", err)
+	}
+	return true, nil
+}
+func QueryGiftById(ctx context.Context, gift_id int64) (*Gift, error) {
+	var userInfo *Gift
+	err := db.WithContext(ctx).
+		Table(constants.TableGift).
+		Where("gift_id = ?", gift_id).
+		First(&userInfo).
+		Error
+	if err != nil {
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, "query GIFT Info error:"+err.Error())
+	}
+	return userInfo, nil
+}
+
+func BuyGift(ctx context.Context, gift_id int64) error {
+	err := db.WithContext(ctx).
+		Table(constants.TableGift).
+		Where("gift_id = ?", gift_id).
+		Update("stock_quantity", gorm.Expr("stock_quantity - ?", 1)).
+		Error
+	if err != nil {
+		return errno.NewErrNo(errno.InternalDatabaseErrorCode, "update stockquantity error: "+err.Error())
+	}
+	return nil
+}
+
+func CreateExchange(ctx context.Context, exchange *Exchange) (*Exchange, error) {
+	err := db.WithContext(ctx).
+		Table(constants.TableExchange).
+		Create(&exchange).Error
+	if err != nil {
+		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, " create exchange"+err.Error())
+	}
+	return exchange, err
 }

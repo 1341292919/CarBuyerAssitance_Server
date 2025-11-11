@@ -3,13 +3,12 @@
 package consult
 
 import (
+	consult "CarBuyerAssitance/biz/model/consult"
 	"CarBuyerAssitance/biz/pack"
 	"CarBuyerAssitance/biz/service"
 	"CarBuyerAssitance/biz/service/model"
 	"CarBuyerAssitance/pkg/errno"
 	"context"
-
-	consult "CarBuyerAssitance/biz/model/consult"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -59,6 +58,73 @@ func QueryConsult(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp.Data = pack.Consultation(data)
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}
+
+// QueryUserScore .
+// @router /api/score/user/query [GET]
+func QueryUserScore(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req consult.QueryUserScoreRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
+		return
+	}
+
+	resp := new(consult.QueryUserScoreResponse)
+	data, err := service.NewConsultService(ctx, c).QueryUserPoint()
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+	resp.Data = pack.PointList(data)
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}
+
+// QueryGift .
+// @router /api/score/gift/query [GET]
+func QueryGift(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req consult.QueryGiftRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.NewErrNo(errno.ParamMissingErrorCode, "param missing:"+err.Error()))
+		return
+	}
+
+	resp := new(consult.QueryGiftResponse)
+
+	gift, err := service.NewConsultService(ctx, c).QueryGift()
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+	resp.Data = pack.Gift(gift)
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}
+
+// BuyGift .
+// @router /api/score/gift/purchase [POST]
+func BuyGift(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req consult.BuyGiftRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+
+	resp := new(consult.BuyGiftResponse)
+	info, err := service.NewConsultService(ctx, c).BuyGift(req.GiftID)
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+	resp.Data = pack.Order(info)
 	resp.Base = pack.BuildBaseResp(errno.Success)
 	pack.SendResponse(c, resp)
 }

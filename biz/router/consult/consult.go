@@ -24,5 +24,17 @@ func Register(r *server.Hertz) {
 			_consult.GET("/purchase", append(_consult0Mw(), consult.Consult)...)
 			_consult.GET("/query", append(_queryconsultMw(), consult.QueryConsult)...)
 		}
+		{
+			_score := _api.Group("/score", _scoreMw()...)
+			{
+				_gift := _score.Group("/gift", _giftMw()...)
+				_gift.POST("/purchase", append(_buygiftMw(), consult.BuyGift)...)
+				_gift.GET("/query", append(_querygiftMw(), consult.QueryGift)...)
+			}
+			{
+				_user := _score.Group("/user", _userMw()...)
+				_user.GET("/query", append(_queryuserscoreMw(), consult.QueryUserScore)...)
+			}
+		}
 	}
 }

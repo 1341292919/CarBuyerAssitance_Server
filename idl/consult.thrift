@@ -19,7 +19,31 @@ struct QueryConsultResponse{
         1: required model.BaseResp base,
         2: required model.Consultation data,
 }
+struct QueryUserScoreRequest{
+
+}
+struct QueryUserScoreResponse{
+            1: required model.BaseResp base,
+            2: required model.PointList data,
+}
+struct QueryGiftRequest{
+
+}
+struct QueryGiftResponse{
+                1: required model.BaseResp base,
+                2: required model.GiftList data,
+}
+struct BuyGiftRequest{
+    1:required i64 gift_id,
+}
+struct BuyGiftResponse{
+          1: required model.BaseResp base,
+          2: required model.Order data,
+}
 service ConsultService{
     ConsultResponse Consult(1:ConsultRequest req)(api.get ="/api/consult/purchase"),
     QueryConsultResponse QueryConsult(1:QueryConsultRequest req)(api.get ="/api/consult/query"),
+    QueryUserScoreResponse QueryUserScore(1:QueryUserScoreRequest req)(api.get ="/api/score/user/query"),
+    QueryGiftResponse QueryGift(1:QueryGiftRequest req)(api.get="/api/score/gift/query"),
+    BuyGiftResponse BuyGift(1:BuyGiftRequest req)(api.post = "/api/score/gift/purchase"),
 }

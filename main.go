@@ -6,6 +6,7 @@ import (
 	"CarBuyerAssitance/biz/dal"
 	"CarBuyerAssitance/biz/mw/jwt"
 	"CarBuyerAssitance/biz/router"
+	"CarBuyerAssitance/biz/service"
 	"CarBuyerAssitance/config"
 	"CarBuyerAssitance/pkg/utils"
 	"github.com/bytedance/gopkg/util/logger"
@@ -16,6 +17,7 @@ func init() {
 	config.Init("main")
 	dal.Init()
 	jwt.Init()
+	service.Init()
 }
 func main() {
 	listenAddr, err := utils.GetAvailablePort()

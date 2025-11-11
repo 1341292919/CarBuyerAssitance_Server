@@ -31,3 +31,33 @@ func _queryconsultMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _scoreMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _userMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _queryuserscoreMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _giftMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _querygiftMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _buygiftMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

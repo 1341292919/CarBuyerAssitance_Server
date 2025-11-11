@@ -39,7 +39,43 @@ struct Consult {
     string	FuelType
     string	BrandPreference
 }
+struct PointList{
+    1:required list<Point> item
+    2:required i64 num,
+    3:required i64 sum, //总积分
+}
+struct Point{
+    1:required i64 point_id
+    2:required string user_id
+    3:required i64 points
+    4:required string reason
+            5: required string created_at
+            6: required string updated_at
+}
 struct Consultation{
     1:required Consult consult
     2: required ConsultResult consult_result
+}
+
+struct Gift{
+    1:required i64 gift_id
+    2:required string gift_name
+    3:required i64 required_points
+    4:required i64 stock_quantity
+    5:required string cover_image_url
+    6:required i64 is_online,
+                 7: required string created_at
+                 8: required string updated_at
+}
+struct GiftList{
+        1:required list<Gift> item
+        2:required i64 total,
+}
+struct Order{
+    1: required  i64 Id,
+    2: required string user_id,
+    3: required string gift_name,
+    4: required i64 need_points,
+    5: required string orderTime
+    6: required i64 status,
 }
