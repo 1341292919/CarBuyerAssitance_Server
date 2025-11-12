@@ -27,15 +27,15 @@ func NewConsultService(ctx context.Context, c *app.RequestContext) *ConsultServi
 	}
 }
 
-func (svc *ConsultService) Consult(consult *model.Consult) (*model.ConsultResult, error) {
+func (svc *ConsultService) Consult(consult *model.Consult) (*model.ConsultResult, int, error) {
 	id := GetUserIDFromContext(svc.c)
 	con, err := mysql.CreateConsultation(svc.ctx, id, consult)
 	if err != nil {
-		return nil, err
+		return nil, -1, err
 	}
 	consultResult, err := utils.CallOpenAIWithConsult(svc.ctx, consult)
 	if err != nil {
-		return nil, fmt.Errorf("call openai error:" + err.Error())
+		return nil, -1, fmt.Errorf("call openai error:" + err.Error())
 	}
 	for i, v := range consultResult.Result {
 		if strings.HasPrefix(v.ImageUrl, constants.UrlPrefix) { //当ai没找到图片
@@ -44,7 +44,7 @@ func (svc *ConsultService) Consult(consult *model.Consult) (*model.ConsultResult
 	}
 	err = mysql.SaveConsultResult(svc.ctx, con.ConsultId, consultResult)
 	if err != nil {
-		return nil, err
+		return nil, -1, err
 	}
 	p := &mysql.Points{
 		UserID: id,
@@ -52,7 +52,7 @@ func (svc *ConsultService) Consult(consult *model.Consult) (*model.ConsultResult
 		Reason: "咨询",
 	}
 	taskqueue.AddUpdateScoreTask(svc.ctx, constants.TaskQueue, p)
-	return consultResult, nil
+	return consultResult, con.ConsultId, nil
 }
 
 func (svc *ConsultService) QueryConsult(consult_id int) (*model.AllConsulation, error) {
@@ -99,11 +99,18 @@ func (svc *ConsultService) BuyGift(gift_id int64) (*mysql.Exchange, error) {
 	if err != nil {
 		return nil, err
 	}
+	userInfo, err := mysql.GetUserInfoByRoleId(svc.ctx, uid)
+	if err != nil {
+		return nil, err
+	}
 	i := &mysql.Exchange{
 		GiftName:     giftInfo.GiftName,
-		UserID:       uid,
+		UserId:       uid,
 		NeedPoints:   giftInfo.RequiredPoints,
 		Status:       1,
+		Address:      userInfo.Address,
+		Phone:        userInfo.Phone,
+		Name:         userInfo.Username,
 		ExchangeTime: time.Now(),
 	}
 	info, err := mysql.CreateExchange(svc.ctx, i)
@@ -114,6 +121,17 @@ func (svc *ConsultService) BuyGift(gift_id int64) (*mysql.Exchange, error) {
 	}
 	taskqueue.AddUpdateScoreTask(svc.ctx, constants.TaskQueue, p)
 	return info, nil
+}
+
+func (svc *ConsultService) QueryOrderByUId(user_id string) ([]*mysql.Exchange, int64, error) {
+	exist, err := mysql.IsUserExist(svc.ctx, user_id)
+	if err != nil {
+		return nil, -1, err
+	}
+	if !exist {
+		return nil, -1, errno.NewErrNo(errno.ServiceUserNotExistCode, "user not exist")
+	}
+	return mysql.QueryExchange(svc.ctx, user_id)
 }
 func defaultImage() string {
 	images := []string{

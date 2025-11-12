@@ -36,7 +36,7 @@ func CreateConsultation(ctx context.Context, userID string, consult *model.Consu
 	}, nil
 }
 
-//保存咨询结果
+// 保存咨询结果
 func SaveConsultResult(ctx context.Context, consultID int, result *model.ConsultResult) error {
 	// 将Car数组转换为JSON
 	carsJSON, err := json.Marshal(result.Result)
@@ -264,4 +264,18 @@ func CreateExchange(ctx context.Context, exchange *Exchange) (*Exchange, error) 
 		return nil, errno.NewErrNo(errno.InternalDatabaseErrorCode, " create exchange"+err.Error())
 	}
 	return exchange, err
+}
+
+func QueryExchange(ctx context.Context, user_id string) ([]*Exchange, int64, error) {
+	var result []*Exchange
+	var count int64
+	err := db.WithContext(ctx).
+		Table(constants.TableExchange).
+		Find(&result).
+		Count(&count).
+		Error
+	if err != nil {
+		return nil, -1, errno.NewErrNo(errno.InternalDatabaseErrorCode, " query exchange"+err.Error())
+	}
+	return result, count, err
 }

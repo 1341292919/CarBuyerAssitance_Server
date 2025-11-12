@@ -61,3 +61,13 @@ func _buygiftMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _orderMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _queryorderMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

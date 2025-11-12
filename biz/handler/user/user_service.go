@@ -28,7 +28,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		Username: req.Username,
 		Password: req.Password,
 		Phone:    req.PhoneNumber,
-		UserId:   req.Id,
+		UserId:   req.UserID,
 		Status:   1,
 	})
 	if err != nil {
@@ -52,7 +52,7 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(user.LoginResponse)
-	userInfo, err := service.NewUserService(ctx, c).Login(req.Id, req.Password)
+	userInfo, err := service.NewUserService(ctx, c).Login(req.UserID, req.Password)
 	if err != nil {
 		pack.SendFailResponse(c, errno.ConvertErr(err))
 		return

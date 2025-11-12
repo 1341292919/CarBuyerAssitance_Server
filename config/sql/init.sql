@@ -79,24 +79,12 @@ CREATE TABLE `gift_exchange`  (
                                   `need_points` int NOT NULL COMMENT '所需积分',
                                   `exchange_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '兑换时间',
                                   `status` tinyint NULL DEFAULT 0 COMMENT '兑换状态（0-待发货/1-已完成）',
+                                  `address` varchar(255) NOT NULL COMMENT '收货地址',
+                                  `name` varchar(255) NOT NULL COMMENT '收货人姓名',
+                                  `phone` varchar(255) NOT NULL COMMENT '收货人手机号',
                                   PRIMARY KEY (`exchange_id`) USING BTREE,
                                   INDEX `idx_user_id`(`user_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '礼品兑换表' ROW_FORMAT = Dynamic;
--- ----------------------------
--- Table structure for llm_config
--- ----------------------------
-DROP TABLE IF EXISTS `llm_config`;
-CREATE TABLE `llm_config`  (
-                               `llm_id` int NOT NULL AUTO_INCREMENT COMMENT '自增LLMID',
-                               `llm_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'LLM名称',
-                               `api_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '加密存储的接口密钥',
-                               `api_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '接口请求地址',
-                               `status` tinyint NULL DEFAULT 1 COMMENT '接口状态（0-禁用/1-正常）',
-                               `weight` tinyint NULL DEFAULT 5 COMMENT '负载均衡权重（1-10）',
-                               PRIMARY KEY (`llm_id`) USING BTREE,
-                               UNIQUE INDEX `idx_llm_name`(`llm_name` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'LLM配置表' ROW_FORMAT = Dynamic;
-
 -- ----------------------------
 -- Table structure for points
 -- ----------------------------

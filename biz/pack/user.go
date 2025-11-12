@@ -25,10 +25,11 @@ func User(user *mysql.User) *resp.UserInfo {
 	}
 }
 
-func ConsultResult(data *model.ConsultResult) *resp.ConsultResult {
+func ConsultResult(data *model.ConsultResult, id int) *resp.ConsultResult {
 	result := &resp.ConsultResult{
-		Analysis: data.Analysis,
-		Proposal: data.Proposal,
+		Analysis:  data.Analysis,
+		Proposal:  data.Proposal,
+		ConsultID: int64(id),
 	}
 
 	// 转换Car列表
@@ -169,12 +170,15 @@ func Gift(data []*mysql.Gift) *resp.GiftList {
 
 func Order(data *mysql.Exchange) *resp.Order {
 	return &resp.Order{
-		UserID:     data.UserID,
+		UserID:     data.UserId,
 		GiftName:   data.GiftName,
 		NeedPoints: int64(data.NeedPoints),
 		Status:     int64(data.Status),
 		OrderTime:  data.ExchangeTime.Format("2006-01-02 15:04:05"),
-		Id:         int64(data.ExchangeID),
+		Id:         data.ExchangeId,
+		Name:       data.Name,
+		Address:    data.Address,
+		Phone:      data.Phone,
 	}
 }
 
@@ -259,5 +263,16 @@ func Scene() *resp.SceneList {
 	return &resp.SceneList{
 		Item:  result,
 		Total: 4,
+	}
+}
+
+func OrderList(data []*mysql.Exchange, total int64) *resp.OrderList {
+	res := make([]*resp.Order, 0)
+	for _, v := range data {
+		res = append(res, Order(v))
+	}
+	return &resp.OrderList{
+		Item:  res,
+		Total: total,
 	}
 }

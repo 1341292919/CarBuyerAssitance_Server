@@ -40,10 +40,18 @@ struct BuyGiftResponse{
           1: required model.BaseResp base,
           2: required model.Order data,
 }
+struct QueryOrderRequest{
+    1: required string user_id,
+}
+struct QueryOrderResponse{
+    1:required model.BaseResp base,
+              2: required model.OrderList data,
+}
 service ConsultService{
     ConsultResponse Consult(1:ConsultRequest req)(api.get ="/api/consult/purchase"),
     QueryConsultResponse QueryConsult(1:QueryConsultRequest req)(api.get ="/api/consult/query"),
     QueryUserScoreResponse QueryUserScore(1:QueryUserScoreRequest req)(api.get ="/api/score/user/query"),
     QueryGiftResponse QueryGift(1:QueryGiftRequest req)(api.get="/api/score/gift/query"),
     BuyGiftResponse BuyGift(1:BuyGiftRequest req)(api.post = "/api/score/gift/purchase"),
+    QueryOrderResponse QueryOrder(1:QueryOrderRequest req)(api.get="/api/score/order/query"),
 }

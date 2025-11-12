@@ -10,7 +10,7 @@ import (
 )
 
 type AddUserRequest struct {
-	UserId         string  `thrift:"userId,1,required" form:"userId,required" json:"userId,required" query:"userId,required"`
+	UserID         string  `thrift:"user_id,1,required" form:"user_id,required" json:"user_id,required" query:"user_id,required"`
 	Username       string  `thrift:"username,2,required" form:"username,required" json:"username,required" query:"username,required"`
 	Phone          string  `thrift:"phone,3,required" form:"phone,required" json:"phone,required" query:"phone,required"`
 	BudgetMin      float64 `thrift:"budget_min,4,required" form:"budget_min,required" json:"budget_min,required" query:"budget_min,required"`
@@ -29,8 +29,8 @@ func NewAddUserRequest() *AddUserRequest {
 func (p *AddUserRequest) InitDefault() {
 }
 
-func (p *AddUserRequest) GetUserId() (v string) {
-	return p.UserId
+func (p *AddUserRequest) GetUserID() (v string) {
+	return p.UserID
 }
 
 func (p *AddUserRequest) GetUsername() (v string) {
@@ -70,7 +70,7 @@ func (p *AddUserRequest) GetPassword() (v string) {
 }
 
 var fieldIDToName_AddUserRequest = map[int16]string{
-	1:  "userId",
+	1:  "user_id",
 	2:  "username",
 	3:  "phone",
 	4:  "budget_min",
@@ -86,7 +86,7 @@ func (p *AddUserRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetUserId bool = false
+	var issetUserID bool = false
 	var issetUsername bool = false
 	var issetPhone bool = false
 	var issetBudgetMin bool = false
@@ -116,7 +116,7 @@ func (p *AddUserRequest) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetUserId = true
+				issetUserID = true
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -214,7 +214,7 @@ func (p *AddUserRequest) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetUserId {
+	if !issetUserID {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -289,7 +289,7 @@ func (p *AddUserRequest) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.UserId = _field
+	p.UserID = _field
 	return nil
 }
 func (p *AddUserRequest) ReadField2(iprot thrift.TProtocol) error {
@@ -458,10 +458,10 @@ WriteStructEndError:
 }
 
 func (p *AddUserRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("userId", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("user_id", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.UserId); err != nil {
+	if err := oprot.WriteString(p.UserID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

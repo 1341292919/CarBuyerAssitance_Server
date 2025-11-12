@@ -68,10 +68,13 @@ type Gift struct {
 }
 
 type Exchange struct {
-	ExchangeID   int       `gorm:"primaryKey;column:exchange_id;autoIncrement" json:"exchange_id"`
-	UserID       string    `gorm:"column:user_id;not null;index:idx_user_id" json:"user_id"`
-	GiftName     string    `gorm:"column:gift_name;size:50;not null" json:"gift_name"`
-	NeedPoints   int       `gorm:"column:need_points;not null" json:"need_points"`
-	ExchangeTime time.Time `gorm:"column:exchange_time;default:CURRENT_TIMESTAMP" json:"exchange_time"`
-	Status       int8      `gorm:"column:status;default:0" json:"status"` // 0-待发货/1-已完成
+	ExchangeId   int64     `gorm:"primaryKey;autoIncrement:true;column:exchange_id"`
+	UserId       string    `gorm:"size:50;not null;column:user_id"`
+	GiftName     string    `gorm:"size:50;not null;column:gift_name"`
+	NeedPoints   int       `gorm:"not null;column:need_points"`
+	ExchangeTime time.Time `gorm:"column:exchange_time"`
+	Status       int8      `gorm:"default:0;column:status"`
+	Address      string    `gorm:"size:255;not null;column:address"`
+	Name         string    `gorm:"size:255;not null;column:name"`
+	Phone        string    `gorm:"size:255;not null;column:phone"`
 }

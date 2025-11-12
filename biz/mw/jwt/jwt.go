@@ -68,7 +68,7 @@ func AccessTokenJwt() {
 			if err := c.BindAndValidate(&loginStruct); err != nil {
 				return nil, err
 			}
-			userResp, err := LoginCheck(ctx, c, loginStruct.Id, loginStruct.Password)
+			userResp, err := LoginCheck(ctx, c, loginStruct.UserID, loginStruct.Password)
 			if err != nil {
 				return nil, err
 			}
@@ -138,7 +138,7 @@ func RefreshTokenJwt() {
 			if err := c.BindAndValidate(&loginStruct); err != nil {
 				return nil, err
 			}
-			userResp, err := LoginCheck(ctx, c, loginStruct.Id, loginStruct.Password)
+			userResp, err := LoginCheck(ctx, c, loginStruct.UserID, loginStruct.Password)
 			if err != nil {
 				return nil, err
 			}

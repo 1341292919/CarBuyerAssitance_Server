@@ -6,7 +6,7 @@ struct RegisterRequest {
     1: required string username,
     2: required string password,
     3: required string phone_number,
-    4: required string Id,
+    4: required string user_id,
 }
 struct RegisterResponse {
     1: required model.BaseResp base,
@@ -15,7 +15,7 @@ struct RegisterResponse {
 
 // login
 struct LoginRequest{
-    1: required string Id,
+    1: required string user_id,
     2: required string password,
 }
 struct LoginResponse{
@@ -38,7 +38,7 @@ struct QueryUserInfoResponse{
         2: required model.UserInfo data,
 }
 struct UpdateUserInfoRequest{
-    1: required string userId
+    1: required string user_id
         4:required double budget_min
         5: required double budget_max
         6:required string preferred_type

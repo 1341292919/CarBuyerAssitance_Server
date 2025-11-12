@@ -32,6 +32,10 @@ func Register(r *server.Hertz) {
 				_gift.GET("/query", append(_querygiftMw(), consult.QueryGift)...)
 			}
 			{
+				_order := _score.Group("/order", _orderMw()...)
+				_order.GET("/query", append(_queryorderMw(), consult.QueryOrder)...)
+			}
+			{
 				_user := _score.Group("/user", _userMw()...)
 				_user.GET("/query", append(_queryuserscoreMw(), consult.QueryUserScore)...)
 			}

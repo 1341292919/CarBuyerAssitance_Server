@@ -28,7 +28,7 @@ func AddUser(ctx context.Context, c *app.RequestContext) {
 		Username:       req.Username,
 		Password:       req.Password,
 		Phone:          req.Phone,
-		UserId:         req.UserId,
+		UserId:         req.UserID,
 		BudgetMax:      req.BudgetMax,
 		BudgetMin:      req.BudgetMin,
 		PreferredType:  req.PreferredType,

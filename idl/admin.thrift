@@ -2,7 +2,7 @@ namespace go admin
 include "./model.thrift"
 
 struct AddUserRequest{
-    1: required string userId
+    1: required string user_id,
     2: required string username,
     3: required string phone
     4:required double budget_min

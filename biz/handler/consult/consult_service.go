@@ -24,7 +24,7 @@ func Consult(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(consult.ConsultResponse)
-	cd, err := service.NewConsultService(ctx, c).Consult(&model.Consult{
+	cd, id, err := service.NewConsultService(ctx, c).Consult(&model.Consult{
 		BudgetRange:     req.BudgetRange,
 		PreferredType:   req.PreferredType,
 		UseCase:         req.UseCasecase,
@@ -35,7 +35,7 @@ func Consult(ctx context.Context, c *app.RequestContext) {
 		pack.SendFailResponse(c, errno.ConvertErr(err))
 		return
 	}
-	resp.Data = pack.ConsultResult(cd)
+	resp.Data = pack.ConsultResult(cd, id)
 	resp.Base = pack.BuildBaseResp(errno.Success)
 	pack.SendResponse(c, resp)
 }
@@ -125,6 +125,28 @@ func BuyGift(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp.Data = pack.Order(info)
+	resp.Base = pack.BuildBaseResp(errno.Success)
+	pack.SendResponse(c, resp)
+}
+
+// QueryOrder .
+// @router /api/score/order/query [GET]
+func QueryOrder(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req consult.QueryOrderRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+
+	resp := new(consult.QueryOrderResponse)
+	info, num, err := service.NewConsultService(ctx, c).QueryOrderByUId(req.UserID)
+	if err != nil {
+		pack.SendFailResponse(c, errno.ConvertErr(err))
+		return
+	}
+	resp.Data = pack.OrderList(info, num)
 	resp.Base = pack.BuildBaseResp(errno.Success)
 	pack.SendResponse(c, resp)
 }

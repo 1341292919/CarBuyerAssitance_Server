@@ -17,9 +17,10 @@ struct UserInfo{
         12: required string deleted_at
 }
 struct ConsultResult{
-    1:required string	Analysis
-    2:required string Proposal
-    3:required list<Car> Result
+    1:required i64 consult_id,
+    2:required string	Analysis
+    3:required string Proposal
+    4:required list<Car> Result
 }
 struct Car{
 	 string  ImageUrl
@@ -82,6 +83,13 @@ struct Order{
     4: required i64 need_points,
     5: required string orderTime
     6: required i64 status,
+    7:required string name,
+    8:required string address,
+    9:required string phone,
+}
+struct OrderList{
+    1:required list<Order> item,
+            2:required i64 total
 }
 struct Frequency{
     1: required string frequency_name

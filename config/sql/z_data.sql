@@ -2,7 +2,7 @@
 INSERT INTO `gift` (`gift_name`, `required_points`, `stock_quantity`, `cover_image_url`, `is_online`) VALUES
 -- 低积分礼品 (100-500积分)
 ('定制汽车钥匙扣', 1, 50, 'https://img.alicdn.com/imgextra/i4/3589751681/O1CN01vIaMRu1OHwfAuLy71_!!0-item_pic.jpg_q50.jpg', 1),
-('车载手机支架', 150, 30, 'https://img.alicdn.com/imgextra/i3/3296263975/O1CN01R2RmF21fEbG7z6R75_!!3296263975.jpg_q50.jpg', 1),
+('车载手机支架', 1, 30, 'https://img.alicdn.com/imgextra/i3/3296263975/O1CN01R2RmF21fEbG7z6R75_!!3296263975.jpg_q50.jpg', 1),
 ('汽车品牌贴纸套装', 200, 100, 'https://img.alicdn.com/imgextra/i4/2210371521619/O1CN01ryGLxi1NpY0Pf9aqk_!!0-item_pic.jpg_q50.jpg', 1),
 ('车载充电器', 300, 25, 'https://img.alicdn.com/imgextra/i1/2612928539/O1CN01XU8nWR2Cwv3C1ieOC_!!2612928539.jpg_q50.jpg', 1),
 ('汽车香薰片', 250, 80, 'https://img.alicdn.com/imgextra/i1/2201465910053/O1CN01jeiyN51CGK11qTdnB_!!2201465910053.jpg_q50.jpg', 1),
